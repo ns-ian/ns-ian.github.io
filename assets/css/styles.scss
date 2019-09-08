@@ -1,0 +1,60 @@
+---
+---
+
+$bg-color-body: #FEEFD8;
+$bg-color-main: #D8C3A0;
+$bg-color-nav: #59242D;
+$nav-url-color: #B4AE9D;
+$nav-info-color: #FEEFD8;
+$bio-pic-border-color: #C75955;
+$post-title-link-color: #59242D;
+
+body {
+  background-color: $bg-color-body;
+}
+
+p, a, li, h1, h2, h3, h4, h5, h6 {
+  font-family: Lusitana;
+}
+
+a, a:hover, a:visited, a:active {
+  color: $post-title-link-color;
+}
+
+.nav-url, .nav-url:hover, .nav-url:visited {
+  color: $nav-url-color;
+  text-decoration: none;
+}
+
+.post-list {
+  list-style-type: none;
+}
+
+.post-title-link a {
+  color: $post-title-link-color;
+  text-decoration: none;
+}
+
+#bio-pic {
+  border: 3px solid $bio-pic-border-color;
+}
+
+#layout-col-left {
+  background-color: $bg-color-nav;
+}
+
+#layout-col-right {
+  background-color: $bg-color-main;
+}
+
+#nav-info {
+  color: $nav-info-color;
+}
+
+#nav-flare a:hover {
+  text-decoration: none;
+}
+
+#nav-flare a img {
+  padding: 2px;
+}
