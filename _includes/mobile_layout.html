@@ -1,0 +1,22 @@
+<div class="row d-sm-none">
+  <div class="col-sm-3 p-0" id="layout-col-left-mobile">
+    <div>
+      <ul class="nav">
+        {% for item in site.data.navigation %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ item.link }}">{{ item.name }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-9" id="layout-col-right">
+    <div class="pt-2">
+      {{ content }}
+    </div>
+    <hr>
+    <footer class="text-center text-muted">
+      <p>2019, Ian Wright. &#9878; MIT</p>
+    </footer>
+  </div>
+</div>
