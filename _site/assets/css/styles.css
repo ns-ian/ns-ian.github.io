@@ -4,6 +4,8 @@ p, a, li, h1, h2, h3, h4, h5, h6 { font-family: Lusitana; }
 
 a, a:hover, a:visited, a:active { color: #59242D; }
 
+.nav-link { color: #B4AE9D !important; }
+
 .nav-url, .nav-url:hover, .nav-url:visited { color: #B4AE9D; text-decoration: none; }
 
 .post-list { list-style-type: none; }
