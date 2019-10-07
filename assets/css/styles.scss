@@ -1,24 +1,28 @@
 ---
 ---
 
-$bg-color-body: #FEEFD8;
-$bg-color-main: #D8C3A0;
-$bg-color-nav: #59242D;
-$nav-url-color: #B4AE9D;
-$nav-info-color: #FEEFD8;
-$bio-pic-border-color: #C75955;
-$post-title-link-color: #59242D;
+$bg-color-body: #FFFFFF;
+$bg-color-main: #FFFFFF;
+$bg-color-nav: #0E4A6C;
+$nav-url-color: #65B8EC;
+$nav-info-color: #FFFFFF;
+$bio-pic-border-color: #65B8EC;
+$post-title-link-color: #0E4A6C;
 
 body {
   background-color: $bg-color-body;
 }
 
-p, a, li, h1, h2, h3, h4, h5, h6 {
-  font-family: Lusitana;
+p, a, li, figcaption, h1, h2, h3, h4, h5, h6 {
+  font-family: Tajawal;
 }
 
 a, a:hover, a:visited, a:active {
   color: $post-title-link-color;
+}
+
+.nav-item {
+  font-size: 1.2em;
 }
 
 .nav-link {
