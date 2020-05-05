@@ -1,6 +1,7 @@
 ---
 layout: post
 author: Ian
+title: You Have a Heart of Gold
 ---
 For the 10th anniversary of *Demon's Souls*, here's my heretical take
 on enjoying this game: forget the lore.

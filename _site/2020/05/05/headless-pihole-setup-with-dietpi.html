@@ -1,0 +1,267 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title>Headless Pi-hole Setup With DietPi | ianwright.dev</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tajawal&display=swap">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row min-vh-100 d-none d-sm-flex">
+  <div class="col-sm-3" id="layout-col-left">
+    <div class="pt-2 sticky-top">
+      <div>
+  <img src="/assets/images/me.jpg" alt="me" class="mw-50 img-fluid rounded-circle" id="bio-pic">
+</div>
+<ul class="nav flex-column pt-3 pb-3">
+  
+  <li class="nav-item">
+    <a class="nav-url" href="/">Home</a>
+  </li>
+  
+  <li class="nav-item">
+    <a class="nav-url" href="/about.html">About</a>
+  </li>
+  
+  <li class="nav-item">
+    <a class="nav-url" href="/archive.html">Archive</a>
+  </li>
+  
+</ul>
+<div>
+  <p id="nav-info">
+    My name's Ian. I mostly do back end web services stuff. I like black coffee
+    and ambient music.
+  </p>
+  <div class="text-center" id="nav-flare">
+    <a href="https://github.com/ns-ian">
+      <img src="/assets/images/GitHub-Mark-Light-32px.png">
+    </a>
+    <a href="https://www.linkedin.com/in/ian-wright-7912657b">
+      <img src="/assets/images/In-2C-34px-TM.png">
+    </a>
+  </div>
+</div>
+
+    </div>
+  </div>
+  <div class="col-sm-9" id="layout-col-right">
+    <div class="pt-2">
+      <h1>Headless Pi-hole Setup With DietPi</h1>
+<p>05 May 2020</p>
+
+<article>
+  <p>Here’s a quick account of my experience deploying the Pi-hole application with
+a minimal image over SSH.</p>
+
+<p>Pi-hole is a DNS sinkhole that has risen to popularity within the last year or
+two. By running the app on your local network (be it on a SBC or a Docker
+container), it will filter DNS lookup requests through a block list, before
+passing the query on to an upstream provider (Google, Cloudflare, etc). This
+allows ad-blocking for any device connected to the network, including those
+that don’t have an easy solution for blocking advertisements, like smart TVs.
+As it blocks ads at the network level, it’s less superficial than using a
+browser extension, which will simply hide the content.</p>
+
+<h3 id="hardware">Hardware</h3>
+<p>To get started, I purchased a Raspberri Pi Zero W from
+<a href="https://www.canakit.com/raspberry-pi-zero-wireless.html">CanaKit</a>, which came
+with the usual accessories: a case, some adapters, a power supply, and a 16 GB
+microSD. The W model isn’t required, as the same setup can be achieved with a
+micro USB to RJ45 adapter, but I figured wireless wouldn’t be a big deal for
+doing DNS lookups.</p>
+
+<h3 id="os">OS</h3>
+<p>A lot of people seem to be fine with using the default Raspbian OS for this,
+which is fine, but I opted to install a minimal image with
+<a href="https://dietpi.com/">DietPi</a>, since I don’t need a desktop environment. (And I
+definitely don’t need LibreOffice.)</p>
+
+<p>The image can be flashed to the microSD via
+<a href="https://www.balena.io/etcher/">Etcher</a> or another such tool for creating
+bootable media. Although I haven’t tried, I don’t see why Rufus or plain old
+<code class="highlighter-rouge">dd</code> wouldn’t work.</p>
+
+<h3 id="setup">Setup</h3>
+<p>I wanted to do a headless installation, which required a couple changes to
+2 files in the root directory of the newly flashed image:</p>
+<ul>
+  <li>In <code class="highlighter-rouge">dietpi.txt</code>, set <code class="highlighter-rouge">AUTO_SETUP_AUTOMATED=1</code> (I also changed my keyboard
+layout and locale here)</li>
+  <li>In <code class="highlighter-rouge">dietpi-wifi.txt</code> set <code class="highlighter-rouge">aWIFI_SSID[0]</code> to the network SSID (in single
+quotes), and <code class="highlighter-rouge">aWIFI_KEY[0]</code> to the password (also in single quotes)</li>
+</ul>
+
+<p>This allowed DietPi to connect to WiFi and go through its setup without any
+direct input.</p>
+
+<p>Once I had slotted the microSD into the Pi and connected it to a power supply,
+I grabbed a snack and let it go through its automated setup. I’m guessing it
+had a setup of 10-15 minutes. Next, I opened my router’s DHCP client list, and
+looked for the device, which was connected with the hostname DietPi. Since I
+was on my Windows machine, I opened up PuTTY and connected to the local IP it
+had been assigned, via SSH. The login is <code class="highlighter-rouge">root</code> with the password <code class="highlighter-rouge">dietpi</code>.</p>
+
+<p>At this point, the Pi needed a static IP rule in my router’s DHCP settings, so
+I went ahead and did that. This step will vary from router to router, but it’s
+usually pretty straightforward (map the Pi’s MAC address to whatever local IP
+you prefer). I power cycled the Pi after this step to ensure it would connect
+to the expected IP.</p>
+
+<p>With that out of the way, I logged back into the Pi and ran the Pi-hole install
+script:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -sSL https://install.pi-hole.net | bash
+</code></pre></div></div>
+<p>There’s really nothing worth noting about this step – it’s fully automated,
+save for a few choices which require your input (what blocklists you want,
+what upstream DNS, etc). Once it finished, I was provided with a password for
+logging into the admin web interface, which I saved for reference.</p>
+
+<h3 id="and">And..?</h3>
+<p>The best litmus test I could think of was to open up Edge on my Windows machine
+and search for a chili recipe. For some reason, recipe websites are the biggest
+offenders for inundating users with disruptive ads. I’m happy to say that I was
+able to surf a few of these sites comfortably without a browser extension, so
+it’s a tentative success! I’ve done a little more testing with our TV, and I’m
+still being served ads via our Internet TV service, but I believe this can be
+mitigated by finding the right domain to add to the blocklist.</p>
+
+<p>I have also noticed that a couple of my devices take a tad longer to get a DNS
+resolution, but it’s still perfectly usable.</p>
+
+<p>Now, anyone who visits and connects their phone to our WiFi will appreciate a
+more pleasant web browsing experience. :)</p>
+
+</article>
+
+    </div>
+    <hr>
+    <footer class="text-center text-muted">
+      <p>2019, Ian Wright. &#9878; MIT</p>
+    </footer>
+  </div>
+</div>
+
+      <div class="row d-sm-none">
+  <div class="col-sm-3 p-0" id="layout-col-left">
+    <div>
+      <ul class="nav">
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/archive.html">Archive</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-9" id="layout-col-right">
+    <div class="pt-2">
+      <h1>Headless Pi-hole Setup With DietPi</h1>
+<p>05 May 2020</p>
+
+<article>
+  <p>Here’s a quick account of my experience deploying the Pi-hole application with
+a minimal image over SSH.</p>
+
+<p>Pi-hole is a DNS sinkhole that has risen to popularity within the last year or
+two. By running the app on your local network (be it on a SBC or a Docker
+container), it will filter DNS lookup requests through a block list, before
+passing the query on to an upstream provider (Google, Cloudflare, etc). This
+allows ad-blocking for any device connected to the network, including those
+that don’t have an easy solution for blocking advertisements, like smart TVs.
+As it blocks ads at the network level, it’s less superficial than using a
+browser extension, which will simply hide the content.</p>
+
+<h3 id="hardware">Hardware</h3>
+<p>To get started, I purchased a Raspberri Pi Zero W from
+<a href="https://www.canakit.com/raspberry-pi-zero-wireless.html">CanaKit</a>, which came
+with the usual accessories: a case, some adapters, a power supply, and a 16 GB
+microSD. The W model isn’t required, as the same setup can be achieved with a
+micro USB to RJ45 adapter, but I figured wireless wouldn’t be a big deal for
+doing DNS lookups.</p>
+
+<h3 id="os">OS</h3>
+<p>A lot of people seem to be fine with using the default Raspbian OS for this,
+which is fine, but I opted to install a minimal image with
+<a href="https://dietpi.com/">DietPi</a>, since I don’t need a desktop environment. (And I
+definitely don’t need LibreOffice.)</p>
+
+<p>The image can be flashed to the microSD via
+<a href="https://www.balena.io/etcher/">Etcher</a> or another such tool for creating
+bootable media. Although I haven’t tried, I don’t see why Rufus or plain old
+<code class="highlighter-rouge">dd</code> wouldn’t work.</p>
+
+<h3 id="setup">Setup</h3>
+<p>I wanted to do a headless installation, which required a couple changes to
+2 files in the root directory of the newly flashed image:</p>
+<ul>
+  <li>In <code class="highlighter-rouge">dietpi.txt</code>, set <code class="highlighter-rouge">AUTO_SETUP_AUTOMATED=1</code> (I also changed my keyboard
+layout and locale here)</li>
+  <li>In <code class="highlighter-rouge">dietpi-wifi.txt</code> set <code class="highlighter-rouge">aWIFI_SSID[0]</code> to the network SSID (in single
+quotes), and <code class="highlighter-rouge">aWIFI_KEY[0]</code> to the password (also in single quotes)</li>
+</ul>
+
+<p>This allowed DietPi to connect to WiFi and go through its setup without any
+direct input.</p>
+
+<p>Once I had slotted the microSD into the Pi and connected it to a power supply,
+I grabbed a snack and let it go through its automated setup. I’m guessing it
+had a setup of 10-15 minutes. Next, I opened my router’s DHCP client list, and
+looked for the device, which was connected with the hostname DietPi. Since I
+was on my Windows machine, I opened up PuTTY and connected to the local IP it
+had been assigned, via SSH. The login is <code class="highlighter-rouge">root</code> with the password <code class="highlighter-rouge">dietpi</code>.</p>
+
+<p>At this point, the Pi needed a static IP rule in my router’s DHCP settings, so
+I went ahead and did that. This step will vary from router to router, but it’s
+usually pretty straightforward (map the Pi’s MAC address to whatever local IP
+you prefer). I power cycled the Pi after this step to ensure it would connect
+to the expected IP.</p>
+
+<p>With that out of the way, I logged back into the Pi and ran the Pi-hole install
+script:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -sSL https://install.pi-hole.net | bash
+</code></pre></div></div>
+<p>There’s really nothing worth noting about this step – it’s fully automated,
+save for a few choices which require your input (what blocklists you want,
+what upstream DNS, etc). Once it finished, I was provided with a password for
+logging into the admin web interface, which I saved for reference.</p>
+
+<h3 id="and">And..?</h3>
+<p>The best litmus test I could think of was to open up Edge on my Windows machine
+and search for a chili recipe. For some reason, recipe websites are the biggest
+offenders for inundating users with disruptive ads. I’m happy to say that I was
+able to surf a few of these sites comfortably without a browser extension, so
+it’s a tentative success! I’ve done a little more testing with our TV, and I’m
+still being served ads via our Internet TV service, but I believe this can be
+mitigated by finding the right domain to add to the blocklist.</p>
+
+<p>I have also noticed that a couple of my devices take a tad longer to get a DNS
+resolution, but it’s still perfectly usable.</p>
+
+<p>Now, anyone who visits and connects their phone to our WiFi will appreciate a
+more pleasant web browsing experience. :)</p>
+
+</article>
+
+    </div>
+    <hr>
+    <footer class="text-center text-muted">
+      <p>2019, Ian Wright. &#9878; MIT</p>
+    </footer>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>
