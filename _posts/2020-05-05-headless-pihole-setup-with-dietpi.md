@@ -68,6 +68,11 @@ save for a few choices which require your input (what blocklists you want,
 what upstream DNS, etc). Once it finished, I was provided with a password for
 logging into the admin web interface, which I saved for reference.
 
+The final step was to adjust my router's DNS settings to point to the Pi's (now
+static) IP address. Mine was originally set to be obtained automatically from
+my ISP, but in any other case, it would be prudent to write the address down
+before changing it.
+
 ### And..?
 The best litmus test I could think of was to open up Edge on my Windows machine
 and search for a chili recipe. For some reason, recipe websites are the biggest
