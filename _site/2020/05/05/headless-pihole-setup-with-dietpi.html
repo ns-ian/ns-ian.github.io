@@ -83,16 +83,16 @@ definitely don’t need LibreOffice.)</p>
 <p>The image can be flashed to the microSD via
 <a href="https://www.balena.io/etcher/">Etcher</a> or another such tool for creating
 bootable media. Although I haven’t tried, I don’t see why Rufus or plain old
-<code class="highlighter-rouge">dd</code> wouldn’t work.</p>
+<code class="language-plaintext highlighter-rouge">dd</code> wouldn’t work.</p>
 
 <h3 id="setup">Setup</h3>
 <p>I wanted to do a headless installation, which required a couple changes to
 2 files in the root directory of the newly flashed image:</p>
 <ul>
-  <li>In <code class="highlighter-rouge">dietpi.txt</code>, set <code class="highlighter-rouge">AUTO_SETUP_AUTOMATED=1</code> (I also changed my keyboard
+  <li>In <code class="language-plaintext highlighter-rouge">dietpi.txt</code>, set <code class="language-plaintext highlighter-rouge">AUTO_SETUP_AUTOMATED=1</code> (I also changed my keyboard
 layout and locale here)</li>
-  <li>In <code class="highlighter-rouge">dietpi-wifi.txt</code> set <code class="highlighter-rouge">aWIFI_SSID[0]</code> to the network SSID (in single
-quotes), and <code class="highlighter-rouge">aWIFI_KEY[0]</code> to the password (also in single quotes)</li>
+  <li>In <code class="language-plaintext highlighter-rouge">dietpi-wifi.txt</code> set <code class="language-plaintext highlighter-rouge">aWIFI_SSID[0]</code> to the network SSID (in single
+quotes), and <code class="language-plaintext highlighter-rouge">aWIFI_KEY[0]</code> to the password (also in single quotes)</li>
 </ul>
 
 <p>This allowed DietPi to connect to WiFi and go through its setup without any
@@ -103,7 +103,7 @@ I grabbed a snack and let it go through its automated setup. I’m guessing it
 had a setup of 10-15 minutes. Next, I opened my router’s DHCP client list, and
 looked for the device, which was connected with the hostname DietPi. Since I
 was on my Windows machine, I opened up PuTTY and connected to the local IP it
-had been assigned, via SSH. The login is <code class="highlighter-rouge">root</code> with the password <code class="highlighter-rouge">dietpi</code>.</p>
+had been assigned, via SSH. The login is <code class="language-plaintext highlighter-rouge">root</code> with the password <code class="language-plaintext highlighter-rouge">dietpi</code>.</p>
 
 <p>At this point, the Pi needed a static IP rule in my router’s DHCP settings, so
 I went ahead and did that. This step will vary from router to router, but it’s
@@ -113,12 +113,17 @@ to the expected IP.</p>
 
 <p>With that out of the way, I logged back into the Pi and ran the Pi-hole install
 script:</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -sSL https://install.pi-hole.net | bash
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -sSL https://install.pi-hole.net | bash
 </code></pre></div></div>
 <p>There’s really nothing worth noting about this step – it’s fully automated,
 save for a few choices which require your input (what blocklists you want,
 what upstream DNS, etc). Once it finished, I was provided with a password for
 logging into the admin web interface, which I saved for reference.</p>
+
+<p>The final step was to adjust my router’s DNS settings to point to the Pi’s (now
+static) IP address. Mine was originally set to be obtained automatically from
+my ISP, but in any other case, it would be prudent to write the address down
+before changing it.</p>
 
 <h3 id="and">And..?</h3>
 <p>The best litmus test I could think of was to open up Edge on my Windows machine
@@ -200,16 +205,16 @@ definitely don’t need LibreOffice.)</p>
 <p>The image can be flashed to the microSD via
 <a href="https://www.balena.io/etcher/">Etcher</a> or another such tool for creating
 bootable media. Although I haven’t tried, I don’t see why Rufus or plain old
-<code class="highlighter-rouge">dd</code> wouldn’t work.</p>
+<code class="language-plaintext highlighter-rouge">dd</code> wouldn’t work.</p>
 
 <h3 id="setup">Setup</h3>
 <p>I wanted to do a headless installation, which required a couple changes to
 2 files in the root directory of the newly flashed image:</p>
 <ul>
-  <li>In <code class="highlighter-rouge">dietpi.txt</code>, set <code class="highlighter-rouge">AUTO_SETUP_AUTOMATED=1</code> (I also changed my keyboard
+  <li>In <code class="language-plaintext highlighter-rouge">dietpi.txt</code>, set <code class="language-plaintext highlighter-rouge">AUTO_SETUP_AUTOMATED=1</code> (I also changed my keyboard
 layout and locale here)</li>
-  <li>In <code class="highlighter-rouge">dietpi-wifi.txt</code> set <code class="highlighter-rouge">aWIFI_SSID[0]</code> to the network SSID (in single
-quotes), and <code class="highlighter-rouge">aWIFI_KEY[0]</code> to the password (also in single quotes)</li>
+  <li>In <code class="language-plaintext highlighter-rouge">dietpi-wifi.txt</code> set <code class="language-plaintext highlighter-rouge">aWIFI_SSID[0]</code> to the network SSID (in single
+quotes), and <code class="language-plaintext highlighter-rouge">aWIFI_KEY[0]</code> to the password (also in single quotes)</li>
 </ul>
 
 <p>This allowed DietPi to connect to WiFi and go through its setup without any
@@ -220,7 +225,7 @@ I grabbed a snack and let it go through its automated setup. I’m guessing it
 had a setup of 10-15 minutes. Next, I opened my router’s DHCP client list, and
 looked for the device, which was connected with the hostname DietPi. Since I
 was on my Windows machine, I opened up PuTTY and connected to the local IP it
-had been assigned, via SSH. The login is <code class="highlighter-rouge">root</code> with the password <code class="highlighter-rouge">dietpi</code>.</p>
+had been assigned, via SSH. The login is <code class="language-plaintext highlighter-rouge">root</code> with the password <code class="language-plaintext highlighter-rouge">dietpi</code>.</p>
 
 <p>At this point, the Pi needed a static IP rule in my router’s DHCP settings, so
 I went ahead and did that. This step will vary from router to router, but it’s
@@ -230,12 +235,17 @@ to the expected IP.</p>
 
 <p>With that out of the way, I logged back into the Pi and ran the Pi-hole install
 script:</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -sSL https://install.pi-hole.net | bash
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -sSL https://install.pi-hole.net | bash
 </code></pre></div></div>
 <p>There’s really nothing worth noting about this step – it’s fully automated,
 save for a few choices which require your input (what blocklists you want,
 what upstream DNS, etc). Once it finished, I was provided with a password for
 logging into the admin web interface, which I saved for reference.</p>
+
+<p>The final step was to adjust my router’s DNS settings to point to the Pi’s (now
+static) IP address. Mine was originally set to be obtained automatically from
+my ISP, but in any other case, it would be prudent to write the address down
+before changing it.</p>
 
 <h3 id="and">And..?</h3>
 <p>The best litmus test I could think of was to open up Edge on my Windows machine
